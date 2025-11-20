@@ -16,6 +16,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\UserBudgetController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\RemittanceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -148,5 +149,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
     Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 });
+Route::get('/remittances/pending', [RemittanceController::class, 'showPending'])
+    ->name('remittances.showPending');
 
 require __DIR__ . '/auth.php';
