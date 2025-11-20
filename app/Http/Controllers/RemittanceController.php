@@ -94,32 +94,36 @@ class RemittanceController extends Controller
 
 
     // Head treasurer acknowledges the remittance
-    public function acknowledge($id)
-    {
-        $remittance = Remittance::findOrFail($id);
+// Head treasurer acknowledges the remittance
+public function acknowledge($id)
+{
+    $remittance = Remittance::findOrFail($id);
 
-        if (Auth::user()->role !== 'admin') {
-            return response()->json(['message' => 'Unauthorized.'], 403);
-        }
-
-        $remittance->is_remitted = 1;
-        $remittance->save();
-
-        // return response()->json(['message' => 'Remittance acknowledged.']);
-        return redirect()->route('remittances.pending')->with('success', 'Remittance acknowledged!');
+    if (Auth::user()->role !== 'admin') {
+        return response()->json(['message' => 'Unauthorized.'], 403);
     }
 
-    // Head treasurer views pending remittances
-    public function pending()
-    {
-        if (Auth::user()->role !== 'admin') {
-            return response()->json(['message' => 'Unauthorized.'], 403);
-        }
+    $remittance->is_remitted = 1;
+    $remittance->save();
 
-        $pending = Remittance::where('is_remitted', 0)->with('user', 'event')->get();
+    return redirect()->route('remittances.showPending')->with('success', 'Remittance acknowledged!');
+}
 
-        return response()->json($pending);
+
+// This returns JSON only (used by API or debugging)
+public function pending()
+{
+    if (Auth::user()->role !== 'admin') {
+        return response()->json(['message' => 'Unauthorized.'], 403);
     }
+
+    $pending = Remittance::where('is_remitted', 0)->with('user', 'event')->get();
+
+    return response()->json($pending);
+}
+
+
+// This loads the Blade page
 public function showPending()
 {
     if (Auth::user()->role !== 'admin') {
@@ -127,12 +131,20 @@ public function showPending()
     }
 
     $pendingRemittances = DB::table('remittances')
-                        ->join('users', 'remittances.treasurer_id', '=', 'users.id')
-                        ->join('events', 'remittances.event_id', '=', 'events.event_id')
-                        ->get();
+        ->join('users', 'remittances.treasurer_id', '=', 'users.id')
+        ->join('events', 'remittances.event_id', '=', 'events.event_id')
+        ->select(
+            'remittances.remittance_id',
+            'remittances.amount',
+            'remittances.is_remitted',
+            'users.first_name',
+            'events.event_name'
+        )
+        ->where('remittances.is_remitted', 0)
+        ->get();
 
-    return redirect()->route('remittances.showPending')->with('success', 'Remittance acknowledged!');
-
+    return view('remittances.pending', compact('pendingRemittances'));
 }
+
 
 }
