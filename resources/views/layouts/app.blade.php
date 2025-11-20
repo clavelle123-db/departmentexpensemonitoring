@@ -1,32 +1,39 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{
-    dark: localStorage.getItem('dark') === 'true',
-    sidebarOpen: false,
-    toggleDarkMode() {
-        this.dark = !this.dark;
-        localStorage.setItem('dark', this.dark);
-    }
-}" :class="{ 'dark': dark }">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+      x-data="{
+            dark: localStorage.getItem('dark') === 'true',
+            sidebarOpen: false,
+            toggleDarkMode() {
+                this.dark = !this.dark;
+                localStorage.setItem('dark', this.dark);
+            }
+      }"
+      :class="{ 'dark': dark }">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Department Expenses Monitoring App') }}</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Tailwind / Alpine -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="font-serif antialiased bg-gray-200 dark:bg-blue-900">
+
+    {{-- 👇 FIX ADDED — Prevents white page when variables are missing --}}
+    @php
+        $unreadCount = $unreadCount ?? 0;
+        $dropdownNotifications = $dropdownNotifications ?? collect();
+    @endphp
+    {{-- 👍 Now layout will NEVER break --}}
+
     <div class="min-h-screen flex flex-col md:flex-row">
 
         <!-- Mobile Sidebar Backdrop -->
@@ -134,19 +141,13 @@
                     </div>
                 </div>
             </header>
-{{--
-            @if (session('toast'))
-                <x-toast :type="session('toast.type')" :message="session('toast.message')" :timeout="session('toast.timeout', 3000)" icon="true" />
-            @endif --}}
 
-            <!-- Main Content -->
             <main class="pt-6 px-4 sm:px-6 md:px-8 pb-6 overflow-y-auto flex-1">
                 @yield('content')
             </main>
         </div>
     </div>
 
-    <!-- Scripts pushed from child views -->
     @stack('scripts')
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
