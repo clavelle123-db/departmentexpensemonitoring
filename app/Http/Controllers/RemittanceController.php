@@ -120,20 +120,19 @@ class RemittanceController extends Controller
 
         return response()->json($pending);
     }
-
-    public function showPending()
-    {
-        if (Auth::user()->role !== 'admin') {
-            abort(403);
-        }
-
-        $pendingRemittances = DB::table('remittances')
-                            ->join('users', 'remittances.treasurer_id', '=', 'users.id')
-                            ->join('events', 'remittances.event_id', '=', 'events.event_id')
-                            ->get();
-
-        // $pendingRemittances = Remittance::with('user', 'event')->latest()->get();
-
-        return view('remittances.pending', compact('pendingRemittances'));
+public function showPending()
+{
+    if (Auth::user()->role !== 'admin') {
+        abort(403);
     }
+
+    $pendingRemittances = DB::table('remittances')
+                        ->join('users', 'remittances.treasurer_id', '=', 'users.id')
+                        ->join('events', 'remittances.event_id', '=', 'events.event_id')
+                        ->get();
+
+    return redirect()->route('remittances.showPending')->with('success', 'Remittance acknowledged!');
+
+}
+
 }
