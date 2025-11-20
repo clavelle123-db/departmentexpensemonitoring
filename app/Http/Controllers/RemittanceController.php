@@ -126,7 +126,15 @@ public function pending()
 // This loads the Blade page
 public function showPending()
 {
-    return "SHOW PENDING WORKS";
+    if (Auth::user()->role !== 'admin') {
+        abort(403);
+    }
+
+    $pendingRemittances = Remittance::where('is_remitted', 0)
+        ->with('treasurer', 'event')
+        ->get();
+
+    return view('remittances.pending', compact('pendingRemittances'));
 }
 
 
