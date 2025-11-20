@@ -130,12 +130,20 @@ public function showPending()
         abort(403);
     }
 
-    $pendingRemittances = Remittance::where('is_remitted', 0)
-        ->with('treasurer', 'event')
+    $pendingRemittances = DB::table('remittances')
+        ->join('users', 'remittances.treasurer_id', '=', 'users.id')
+        ->join('events', 'remittances.event_id', '=', 'events.event_id')
+        ->select(
+            'remittances.*',
+            'users.name as treasurer_name',
+            'events.event_name'
+        )
+        ->where('remittances.is_remitted', 0)
         ->get();
 
     return view('remittances.pending', compact('pendingRemittances'));
 }
+
 
 
 }
