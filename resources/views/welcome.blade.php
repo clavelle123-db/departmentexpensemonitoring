@@ -30,7 +30,7 @@ asdas
             <h1 class="text-4xl font-bold mb-4 text-gray-800">Welcome to the Department Expenses Monitoring App</h1>
 
             @auth
-                <p class="text-xl text-gray-600 mb-4">Wasdadsadasdadahfdsadgasdahasdasdelcome back, <strong>{{ auth()->user()->first_name }}</strong>!</p>
+                <p class="text-xl text-gray-600 mb-4">Welcome back, <strong>{{ auth()->user()->first_name }}</strong>!</p>
                 <a href="{{ route('dashboard') }}" class="inline-block text-white bg-teal-600 hover:bg-teal-700 py-3 px-8 rounded-lg text-xl transition-all ease-in-out duration-300 transform hover:scale-105">Go to Dashboard</a>
             @else
                 <p class="text-xl text-gray-600 mb-4">New here? Sign up or log in to start managing your department's expenses.</p>

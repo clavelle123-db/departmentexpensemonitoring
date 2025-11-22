@@ -2,63 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Department;
+use App\Models\Budget;
 
 class BudgetController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
-    }
+        $user = Auth::user();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        // Try to get the department for the logged-in head
+        $department = Department::where('department_head_id', $user->id)->first();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if ($department) {
+            // Fetch the budget row for this department
+            $budget = Budget::where('department_id', $department->id)->first();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+            // If no budget exists for the assigned department, show all budgets as fallback
+            if (!$budget) {
+                $allBudgets = Budget::all();
+                return view('head.summary', ['budget' => null, 'allBudgets' => $allBudgets]);
+            }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            return view('head.summary', compact('budget'));
+        } else {
+            // No department assigned — show all budgets as fallback
+            $allBudgets = Budget::all();
+            return view('head.summary', ['budget' => null, 'allBudgets' => $allBudgets]);
+        }
     }
 }

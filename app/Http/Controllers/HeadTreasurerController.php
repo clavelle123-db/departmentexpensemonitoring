@@ -3,62 +3,43 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Remittance;
+use Illuminate\Support\Facades\Auth;
 
 class HeadTreasurerController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of pending remittances.
      */
     public function index()
     {
-        //
+        if (Auth::user()->role !== 'head') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Fetch pending remittances
+        $pendingRemittances = Remittance::where('is_remitted', 0)
+            ->with('treasurer', 'event')
+            ->latest()
+            ->get();
+
+        return view('head.remittances.pending', compact('pendingRemittances'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Acknowledge a remittance.
      */
-    public function create()
+    public function acknowledge($id)
     {
-        //
-    }
+        if (Auth::user()->role !== 'head') {
+            abort(403, 'Unauthorized action.');
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $remittance = Remittance::findOrFail($id);
+        $remittance->is_remitted = 1;
+        $remittance->save();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('head.remittances.index')
+                         ->with('success', 'Remittance acknowledged successfully!');
     }
 }

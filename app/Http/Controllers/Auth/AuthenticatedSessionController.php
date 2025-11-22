@@ -32,18 +32,19 @@ class AuthenticatedSessionController extends Controller
 
         // Redirect to intended or default dashboard
         $user = Auth::user();
+switch ($user->role) {
+    case 'admin':
+        return redirect()->route('admin.dashboard');
+    case 'head':
+        return redirect()->route('head.dashboard'); // <-- changed
+    case 'user':
+        return redirect()->route('user.dashboard');
+    default:
+        Auth::logout();
+        return redirect()->route('login')->withErrors(['role' => 'Unauthorized role.']);
+}
 
-        switch ($user->role) {
-            case 'admin':
-                return redirect()->route('remittances.pending');
-            case 'head':
-                return redirect()->route('remittances.index');
-            case 'user':
-                return redirect()->route('user.dashboard');
-            default:
-                Auth::logout();
-                return redirect()->route('login')->withErrors(['role' => 'Unauthorized role.']);
-        }
+
 
     }
 
@@ -60,4 +61,5 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
 }

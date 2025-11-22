@@ -17,6 +17,11 @@ use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\UserBudgetController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RemittanceController;
+use App\Http\Controllers\SectionController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\TreasurerController;
+use App\Http\Controllers\HeadTreasurerController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -109,7 +114,7 @@ Route::middleware(['auth', 'role:head'])->group(function () {
 Route::middleware(['auth', 'role:head'])->group(function () {
     Route::get('/history', [ExpenseHistoryController::class, 'index'])->name('expenses.history');
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-    Route::get('head/dashboard', [HeadDashboardController::class, 'index'])->name('head.dashboard');
+
 });
 
 // Admin Dashboard
@@ -132,16 +137,33 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/expense-reports', [App\Http\Controllers\AdminExpenseReportController::class, 'index'])->name('admin.expense-reports.index');
 });
-
 Route::middleware(['auth', 'role:head'])->group(function () {
+    // Expense routes
     Route::delete('expenses/{expense}', [ExpenseHistoryController::class, 'destroy'])->name('expenses.destroy');
     Route::get('expenses/{id}', [ExpenseController::class, 'see'])->name('expenses.see');
+
+    // Remittance routes
+    Route::get('/remittances/create', [RemittanceController::class, 'create'])->name('remittances.create');
+    Route::post('/remittances', [RemittanceController::class, 'store'])->name('remittances.store');
 });
+// Remittance edit form
+Route::get('/remittances/{remittance}/edit', [RemittanceController::class, 'edit'])
+    ->name('remittances.edit');
+
+// Remittance update
+Route::put('/remittances/{remittance}', [RemittanceController::class, 'update'])
+    ->name('remittances.update');
+// Delete remittance
+Route::delete('/remittances/{remittance}', [RemittanceController::class, 'destroy'])
+    ->name('remittances.destroy');
+
+
 
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
     Route::get('/budget-summary', [UserBudgetController::class, 'index'])->name('budget.user-summary');
 });
+Route::middleware(['auth', 'role:head'])->get('/head/dashboard', [HeadDashboardController::class, 'index'])->name('head.dashboard');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
@@ -151,5 +173,50 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::get('/remittances/pending', [RemittanceController::class, 'showPending'])
     ->name('remittances.showPending');
+Route::get('/remittances/pending', [RemittanceController::class, 'pending'])
+    ->name('remittances.pending');
+Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::get('/treasurers', [TreasurerController::class, 'index'])->name('treasurers.index');
+Route::get('/events/create', [EventController::class, 'create'])
+    ->name('events.create');
+Route::get('/events/{event}/edit', [EventController::class, 'edit'])
+    ->name('events.edit');
+Route::delete('/events/{event}', [EventController::class, 'destroy'])
+    ->name('events.destroy');
+Route::get('/sections/create', [SectionController::class, 'create'])
+    ->name('sections.create');
+Route::get('/sections/{section}/edit', [SectionController::class, 'edit'])
+    ->name('sections.edit');
+Route::delete('/sections/{section}', [SectionController::class, 'destroy'])
+    ->name('sections.destroy');
+Route::get('/treasurers/create', [TreasurerController::class, 'create'])
+    ->name('treasurers.create');
+Route::get('/treasurers/{treasurer}/edit', [TreasurerController::class, 'edit'])
+    ->name('treasurers.edit');
+Route::delete('/treasurers/{treasurer}', [TreasurerController::class, 'destroy'])
+    ->name('treasurers.destroy');
+// Head treasurer acknowledges a remittance
+Route::post('/remittances/{id}/acknowledge', [RemittanceController::class, 'acknowledge'])
+    ->name('remittances.acknowledge');
+
+// Show pending remittances page (for Blade)
+Route::get('/remittances/pending', [RemittanceController::class, 'showPending'])
+    ->name('remittances.pending');
+Route::post('/events', [EventController::class, 'store'])
+    ->name('events.store');
+Route::post('/sections', [SectionController::class, 'store'])
+    ->name('sections.store');
+Route::post('/treasurers', [TreasurerController::class, 'store'])
+    ->name('treasurers.store');
+Route::get('/remittances', [RemittanceController::class, 'index'])
+    ->name('remittances.index');
+Route::middleware(['auth', 'role:head'])->group(function () {
+    Route::get('/head/remittances', [HeadTreasurerController::class, 'index'])
+        ->name('head.remittances.index');
+
+    Route::post('/head/remittances/{id}/acknowledge', [HeadTreasurerController::class, 'acknowledge'])
+        ->name('head.remittances.acknowledge');
+});
 
 require __DIR__ . '/auth.php';
