@@ -59,10 +59,7 @@
             <h4 class="font-semibold text-gray-800 dark:text-white mb-2">Budget vs. Actual (Per Department)</h4>
             <canvas id="budgetChart"></canvas>
         </div>
-        <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
-            <h4 class="font-semibold text-gray-800 dark:text-white mb-2">Top 5 Spending Departments</h4>
-            <canvas id="topSpendersChart"></canvas>
-        </div>
+
     </div>
 
     <!-- Department Budgets List with Progress Bar -->
