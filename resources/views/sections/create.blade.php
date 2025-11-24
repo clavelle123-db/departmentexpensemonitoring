@@ -42,6 +42,11 @@
                 <input type="number" name="no_of_students" class="form-control" required>
             </div>
             <button class="btn btn-success bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">Save</button>
+              <button onclick="window.location.href='https://iprog-sms.com'"
+        class="btn btn-success bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">
+    Save
+</button>
+<button class="btn btn-success bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">sms</button>
             <button class="btn btn-danger bg-blue-red py-2 px-4 rounded-md hover:bg-indigo-700">
                 <a href="{{ route('sections.index') }}" class="btn btn-danger" >Cancel</a>
             </button>
