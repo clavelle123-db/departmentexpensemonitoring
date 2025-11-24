@@ -54,18 +54,8 @@
         <canvas id="budgetBarChart"></canvas>
     </div>
 
-    <!-- Category Pie Chart -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-        <h4 class="font-semibold text-gray-800 dark:text-white mb-2">Category Breakdown</h4>
-        <canvas id="categoryPieChart"></canvas>
-    </div>
 
-    <!-- Top 5 Spenders -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-        <h4 class="font-semibold text-gray-800 dark:text-white mb-2">Top 5 Categories</h4>
-        <canvas id="topCategoriesChart"></canvas>
-    </div>
-</div>
+   
 
 <!-- Export Buttons -->
 <div class="mt-8 text-right space-x-2">
