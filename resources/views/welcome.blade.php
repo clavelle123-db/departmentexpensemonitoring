@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-asdas
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +20,7 @@ asdas
     <!-- Main container -->
     <div class="flex min-h-screen items-center justify-center px-6 sm:px-12">
         <div class="text-center bg-white bg-opacity-80 p-10 rounded-xl shadow-2xl w-full max-w-lg">
-hhashdhashdasd
+
             <!-- Logo -->
             <div class="mb-6">
                 <img src="{{ asset('images/melogo.png') }}" alt="Logo" class="mx-auto w-30 h-20 mb-4">
