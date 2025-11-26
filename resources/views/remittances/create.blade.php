@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto p-6">
-    <h2 class="text-3xl font-semibold mb-6 text-gray-800 dark:text-white">Submit Remittance</h2>
+    <h2 class="text-3xl font-semibold mb-6 text-gray-800 dark:text-white">Submit Expense</h2>
 
     <form action="{{ route('remittances.store') }}" method="POST">
         @csrf

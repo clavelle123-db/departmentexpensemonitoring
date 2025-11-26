@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mx-auto p-6">
     <div class="mt-6">
-        <h1 class="text-3xl font-semibold text-gray-800 dark:text-white mb-5">Remittances</h1>
+        <h1 class="text-3xl font-semibold text-gray-800 dark:text-white mb-5">EXPENSES</h1>
 
         <a href="{{ route('remittances.create') }}"
            class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 mb-3 inline-block">
