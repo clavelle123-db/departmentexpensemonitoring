@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\Section;
 use App\Models\Treasurer;
+use App\Models\User;
 
 class SectionController extends Controller
 {
@@ -14,11 +15,13 @@ class SectionController extends Controller
         return view('sections.index', compact('sections'));
     }
 
-    public function create() {
-        // Pass all treasurers for the dropdown
-        $treasurers = Treasurer::all();
-        return view('sections.create', compact('treasurers'));
-    }
+   public function create()
+{
+    // Fetch users that can be assigned as treasurers
+    $treasurers = User::all(); // or filter if you have a 'role' column
+
+    return view('sections.create', compact('treasurers'));
+}
 
    public function store(Request $request)
 {

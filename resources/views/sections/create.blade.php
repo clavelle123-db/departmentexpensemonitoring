@@ -51,7 +51,7 @@
         <option value="">-- Select Treasurer --</option>
         @foreach($treasurers as $treasurer)
             <option value="{{ $treasurer->id }}" {{ old('treasurer_id') == $treasurer->id ? 'selected' : '' }}>
-                {{ $treasurer->name ?? $treasurer->email }}
+                {{ $treasurer->name ?? $treasurer->first_name.' '.$treasurer->middle_name.' '.$treasurer->last_name }}
             </option>
         @endforeach
     </select>
