@@ -78,11 +78,16 @@ class EventController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $event = Event::findOrFail($id);
-        $event->delete();
-        return redirect()->route('events.index')->with('success','Events deleted');
-    }
+     */public function destroy(string $id)
+{
+    // Delete all remittances linked to this event
+    \DB::table('remittances')->where('event_id', $id)->delete();
+
+    // Now delete the event
+    $event = Event::findOrFail($id);
+    $event->delete();
+
+    return redirect()->route('events.index')->with('success', 'Event deleted successfully');
+}
+
 }
