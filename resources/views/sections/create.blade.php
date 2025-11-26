@@ -44,18 +44,19 @@
                 <input type="number" name="no_of_students" class="form-control" value="{{ old('no_of_students') }}" required>
             </div>
 
-            <!-- Treasurer dropdown -->
-            <div class="mb-3">
-                <label class="form-label">Assign Treasurer:</label>
-                <select name="treasurer_id" class="form-control" required>
-                    <option value="">-- Select Treasurer --</option>
-                    @foreach($treasurers as $treasurer)
-                        <option value="{{ $treasurer->treasurer_id }}" {{ old('treasurer_id') == $treasurer->treasurer_id ? 'selected' : '' }}>
-                            {{ $treasurer->treasurer_name ?? 'Treasurer '.$treasurer->treasurer_id }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+          <!-- Treasurer dropdown -->
+<div class="mb-3">
+    <label class="form-label">Assign Treasurer:</label>
+    <select name="treasurer_id" class="form-control" required>
+        <option value="">-- Select Treasurer --</option>
+        @foreach($treasurers as $treasurer)
+            <option value="{{ $treasurer->id }}" {{ old('treasurer_id') == $treasurer->id ? 'selected' : '' }}>
+                {{ $treasurer->name ?? $treasurer->email }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
 
             <button class="btn btn-success bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">Save</button>
 

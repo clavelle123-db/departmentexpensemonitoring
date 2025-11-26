@@ -20,30 +20,30 @@ class SectionController extends Controller
         return view('sections.create', compact('treasurers'));
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'section_name'=> [
-                'required',
-                Rule::unique('sections')->where(fn($query) => $query->where('year_level', $request->year_level)),
-            ],
-            'year_level'=> 'required',
-            'no_of_students' => 'required|integer|min:0',
-            'treasurer_id' => 'required|exists:treasurers,treasurer_id',
-        ], [
-            'section_name.unique' => 'A section with this name and year level already exists.',
-            'section_name.required' => 'Section name is required.',
-            'year_level.required' => 'Year level is required.',
-            'no_of_students.required' => 'Number of students is required.',
-            'no_of_students.integer' => 'Number of students must be an integer.',
-            'treasurer_id.required' => 'Treasurer is required.',
-            'treasurer_id.exists' => 'Selected treasurer is invalid.',
-        ]);
+   public function store(Request $request)
+{
+    $validated = $request->validate([
+        'section_name'=> [
+            'required',
+            Rule::unique('sections')->where(fn($query) => $query->where('year_level', $request->year_level)),
+        ],
+        'year_level'=> 'required',
+        'no_of_students' => 'required|integer|min:0',
+        'treasurer_id' => 'required|exists:users,id', // validate against users table
+    ], [
+        'section_name.unique' => 'A section with this name and year level already exists.',
+        'section_name.required' => 'Section name is required.',
+        'year_level.required' => 'Year level is required.',
+        'no_of_students.required' => 'Number of students is required.',
+        'no_of_students.integer' => 'Number of students must be an integer.',
+        'treasurer_id.required' => 'Treasurer is required.',
+        'treasurer_id.exists' => 'Selected treasurer is invalid.',
+    ]);
 
-        Section::create($validated);
+    Section::create($validated);
 
-        return redirect()->back()->with('success', 'Section created successfully!');
-    }
+    return redirect()->back()->with('success', 'Section created successfully!');
+}
 
     public function edit(Section $section) {
         $treasurers = Treasurer::all(); // pass treasurers for edit form
