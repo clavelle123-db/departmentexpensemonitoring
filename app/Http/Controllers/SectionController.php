@@ -67,10 +67,20 @@ class SectionController extends Controller
 
 public function destroy(Section $section)
 {
-    // Delete all events linked to this section
+    // 1) Delete remittances linked to treasurers of this section
+    \DB::table('remittances')->whereIn('treasurer_id', function ($query) use ($section) {
+        $query->select('treasurer_id')
+              ->from('treasurers')
+              ->where('section_id', $section->section_id);
+    })->delete();
+
+    // 2) Delete treasurers belonging to this section
+    \DB::table('treasurers')->where('section_id', $section->section_id)->delete();
+
+    // 3) Delete events linked to this section
     \DB::table('events')->where('applied_to', $section->section_id)->delete();
 
-    // Now delete the section
+    // 4) Now safely delete the section
     $section->delete();
 
     return redirect()->route('sections.index')->with('success', 'Section deleted');
