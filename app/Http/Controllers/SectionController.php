@@ -67,20 +67,25 @@ class SectionController extends Controller
 public function destroy(Section $section)
 {
     // Check if there are any events linked to this section
-    $eventsCount = \DB::table('events')
-        ->where('applied_to', $section->section_id)
-        ->count();
+    $eventsCount = \DB::table('events')->where('applied_to', $section->section_id)->count();
 
-    if ($eventsCount > 0) {
+    // Check if there are any treasurers linked to these events
+    $treasurersCount = \DB::table('treasurers')
+        ->whereIn('treasurer_id', function($query) use ($section) {
+            $query->select('treasurer_id')
+                  ->from('remittances');
+        })->count();
+
+    if ($eventsCount > 0 || $treasurersCount > 0) {
         return redirect()->route('sections.index')
-            ->with('error', 'Cannot delete section: related events exist.');
+            ->with('error', 'Cannot delete section: related events or remittances exist.');
     }
 
     // Safe to delete the section
     $section->delete();
 
     return redirect()->route('sections.index')
-        ->with('success', 'Section deleted successfully.');
+                     ->with('success', 'Section deleted successfully.');
 }
 
 }
