@@ -23,7 +23,7 @@ public function index()
     $expenses = Expense::with(['user', 'department'])->latest()->get();
 
     // Pass $expenses to the Blade view
-    return view('expenses.index', compact('expenses'));
+    return view('remittances.index', compact('expenses'));
 }
 
 
