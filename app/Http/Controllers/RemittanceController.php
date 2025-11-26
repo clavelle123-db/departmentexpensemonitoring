@@ -16,12 +16,15 @@ class RemittanceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-         $remittances = Remittance::with('treasurer')->latest()->get();
-        // return view('remittances.index', compact('remittances',$remittances));
-        return view('remittances.index', compact('remittances'));
-    }
+   public function index()
+{
+    // Fetch all remittances with the associated treasurer and order by latest
+    $remittances = Remittance::with('treasurer')->latest()->get();
+
+    // Pass the data to the view
+    return view('remittances.index', compact('remittances'));
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -46,12 +49,13 @@ public function store(Request $request)
     ]);
 
     // Get the treasurer_id of the logged-in user
-    $treasurer = Auth::user()->treasurer; // Make sure User model has relation: user -> treasurer
+    $treasurer = Auth::user()->treasurer; // Ensure User model has treasurer() relationship
 
     if (!$treasurer) {
         return redirect()->back()->with('error', 'Treasurer record not found for your account.');
     }
 
+    // Store in remittances table
     Remittance::create([
         'treasurer_id' => $treasurer->treasurer_id,
         'event_id' => $request->event_id,

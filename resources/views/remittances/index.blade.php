@@ -7,6 +7,10 @@
                 <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">
                     <a href="{{ route('remittances.create') }}" class="btn btn-primary mb-3">Add Expenses</a>
                 </button>
+                 <a href="https://www.iprogsms.com/free-sms/new"
+   class="btn btn-success bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">
+    Sms
+</a>
     </div>
 
     <div class="overflow-x-auto mt-3">
