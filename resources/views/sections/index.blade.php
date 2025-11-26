@@ -30,13 +30,13 @@
             <td class="px-4 py-2">{{ $section->section_name }}</td>
             <td class="px-4 py-2">{{ $section->year_level }}</td>
             <td class="px-4 py-2">{{ $section->no_of_students }}</td>
-           <td>{{ $section->treasurer->first_name ?? 'No Treasurer' }}</td>
+           <td>
+    {{ $section->treasurer->first_name ?? '' }}
+    {{ $section->treasurer->middle_name ?? '' }}
+    {{ $section->treasurer->last_name ?? '' }}
+</td>
 
-            <td class="px-4 py-2">
-                @foreach($section->events as $event)
-                    <span class="badge bg-success">{{ $event->event_name }}</span>
-                @endforeach
-            </td>
+
             <td class="px-4 py-2">
                 <a href="{{ route('sections.edit', $section->section_id) }}" class="btn btn-warning btn-sm">Edit</a>
                 <form action="{{ route('sections.destroy', $section->section_id) }}" method="POST" class="d-inline">

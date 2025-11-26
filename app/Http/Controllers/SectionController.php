@@ -10,7 +10,8 @@ use App\Models\User;
 
 class SectionController extends Controller
 {public function index() {
-    $sections = Section::with(['treasurer', 'user', 'headTreasurer', 'events'])->get();
+$sections = Section::with(['treasurer', 'events', 'user', 'headTreasurer'])->get();
+
     return view('sections.index', compact('sections'));
 }
 
