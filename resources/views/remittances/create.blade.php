@@ -36,7 +36,7 @@
             <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
                 Save
             </button>
-            <a href="{{ route('expenses.index') }}" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
+            <a href="{{ route('remittances.index') }}" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
                 Cancel
             </a>
         </div>
