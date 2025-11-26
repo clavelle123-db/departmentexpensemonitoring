@@ -42,10 +42,7 @@
                 <input type="number" name="no_of_students" class="form-control" required>
             </div>
             <button class="btn btn-success bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">Save</button>
-          <a href="https://www.iprogsms.com/free-sms/new"
-   class="btn btn-success bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">
-    Sms
-</a>
+         
 
             <button class="btn btn-danger bg-blue-red py-2 px-4 rounded-md hover:bg-indigo-700">
                 <a href="{{ route('sections.index') }}" class="btn btn-danger" >Cancel</a>
