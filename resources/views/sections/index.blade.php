@@ -19,7 +19,7 @@
             <th class="px-4 py-2">Year Level</th>
             <th class="px-4 py-2"># of Students</th>
             <th class="px-4 py-2">Treasurers</th>
-            <th class="px-4 py-2">Events</th>
+
             <th class="px-4 py-2">Actions</th>
         </tr>
     </thead>
@@ -30,16 +30,19 @@
             <td class="px-4 py-2">{{ $section->section_name }}</td>
             <td class="px-4 py-2">{{ $section->year_level }}</td>
             <td class="px-4 py-2">{{ $section->no_of_students }}</td>
-            <td class="px-4 py-2">
-                @foreach($section->treasurers as $treasurer)
-                    <span class="badge bg-info">{{ $treasurer->user->first_name }}</span>
-                @endforeach
-            </td>
-            <td class="px-4 py-2">
-                @foreach($section->events as $event)
-                    <span class="badge bg-success">{{ $event->event_name }}</span>
-                @endforeach
-            </td>
+           <td class="px-4 py-2">
+    @if($section->treasurer)
+        <span class="badge bg-info">
+            {{ $section->treasurer->first_name ?? '' }}
+            {{ $section->treasurer->middle_name ?? '' }}
+            {{ $section->treasurer->last_name ?? '' }}
+        </span>
+    @else
+        <span class="badge bg-secondary">No Treasurer</span>
+    @endif
+</td>
+
+
             <td class="px-4 py-2">
                 <a href="{{ route('sections.edit', $section->section_id) }}" class="btn btn-warning btn-sm">Edit</a>
                 <form action="{{ route('sections.destroy', $section->section_id) }}" method="POST" class="d-inline">
