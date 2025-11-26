@@ -26,12 +26,12 @@ class RemittanceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        $treasurers = Treasurer::all();
-        $events = Event::all();
-        return view('remittances.create', compact('treasurers','events'));
-    }
+  public function create()
+{
+    $treasurers = Treasurer::all();
+    return view('remittances.create', compact('treasurers'));
+}
+
 
     /**
      * Store a newly created resource in storage.
@@ -39,14 +39,14 @@ class RemittanceController extends Controller
 public function store(Request $request)
 {
     $request->validate([
-        'event_id' => 'required|exists:events,event_id',
+        'event_name' => 'required|string|max:255',
         'amount' => 'required|numeric|min:0.01',
         'remittance_date' => 'required|date',
         'remarks' => 'nullable|string',
     ]);
 
     // Get the treasurer_id of the logged-in user
-    $treasurer = Auth::user()->treasurer; // Ensure User model has treasurer() relationship
+    $treasurer = Auth::user()->treasurer;
 
     if (!$treasurer) {
         return redirect()->back()->with('error', 'Treasurer record not found for your account.');
@@ -55,7 +55,7 @@ public function store(Request $request)
     // Store in remittances table
     Remittance::create([
         'treasurer_id' => $treasurer->treasurer_id,
-        'event_id' => $request->event_id,
+        'event_name' => $request->event_name,
         'amount' => $request->amount,
         'remittance_date' => $request->remittance_date,
         'remarks' => $request->remarks,

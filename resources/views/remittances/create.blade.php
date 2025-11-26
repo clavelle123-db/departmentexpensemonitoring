@@ -8,12 +8,8 @@
         @csrf
 
         <div class="mb-4">
-            <label for="event_id" class="block mb-1 font-medium text-gray-700 dark:text-white">Event</label>
-            <select name="event_id" id="event_id" class="form-control w-full p-2 border rounded" required>
-                @foreach($events as $event)
-                    <option value="{{ $event->event_id }}">{{ $event->event_name }}</option>
-                @endforeach
-            </select>
+            <label for="event_name" class="block mb-1 font-medium text-gray-700 dark:text-white">Event Name</label>
+            <input type="text" name="event_name" id="event_name" class="form-control w-full p-2 border rounded" placeholder="Enter event name" required>
         </div>
 
         <div class="mb-4">
