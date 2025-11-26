@@ -31,6 +31,7 @@
             <td class="px-4 py-2">{{ $section->year_level }}</td>
             <td class="px-4 py-2">{{ $section->no_of_students }}</td>
            <td class="px-4 py-2">
+   <td class="px-4 py-2">
     @if($section->treasurer)
         <span class="badge bg-info">
             {{ $section->treasurer->first_name ?? '' }}
@@ -38,9 +39,10 @@
             {{ $section->treasurer->last_name ?? '' }}
         </span>
     @else
-        <span class="badge bg-secondary">No Treasurer</span>
+        <span class="badge bg-secondary">No Head Treasurer Assigned</span>
     @endif
 </td>
+
 
 
             <td class="px-4 py-2">

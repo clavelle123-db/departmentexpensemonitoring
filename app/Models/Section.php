@@ -11,10 +11,11 @@ class Section extends Model {
     public function events() {
         return $this->hasMany(Event::class, 'applied_to');
     }
+public function treasurer() {
+    return $this->belongsTo(User::class, 'treasurer_id', 'id')
+                ->where('role', 'head'); // only fetch users with role 'head'
+}
 
-    public function treasurers() {
-        return $this->hasMany(Treasurer::class, 'section_assigned');
-    }
 
     public function user() {
         return $this->belongsTo(User::class, 'user_id');
