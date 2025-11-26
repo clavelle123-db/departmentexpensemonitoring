@@ -219,5 +219,6 @@ Route::middleware(['auth', 'role:head'])->group(function () {
         ->name('head.remittances.acknowledge');
 });
 Route::put('/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
+Route::put('/events/{event}', [EventController::class, 'update'])->name('events.update');
 
 require __DIR__ . '/auth.php';
