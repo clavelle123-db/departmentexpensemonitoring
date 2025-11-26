@@ -9,11 +9,11 @@ use App\Models\Treasurer;
 use App\Models\User;
 
 class SectionController extends Controller
-{
-    public function index() {
-        $sections = Section::with(['user','headTreasurer','events'])->get();
-        return view('sections.index', compact('sections'));
-    }
+{public function index() {
+    $sections = Section::with(['treasurer', 'user', 'headTreasurer', 'events'])->get();
+    return view('sections.index', compact('sections'));
+}
+
 
    public function create()
 {

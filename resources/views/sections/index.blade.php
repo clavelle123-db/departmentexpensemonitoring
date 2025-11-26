@@ -30,11 +30,8 @@
             <td class="px-4 py-2">{{ $section->section_name }}</td>
             <td class="px-4 py-2">{{ $section->year_level }}</td>
             <td class="px-4 py-2">{{ $section->no_of_students }}</td>
-            <td class="px-4 py-2">
-                @foreach($section->treasurers as $treasurer)
-                    <span class="badge bg-info">{{ $treasurer->user->first_name }}</span>
-                @endforeach
-            </td>
+           <td>{{ $section->treasurer->first_name ?? 'No Treasurer' }}</td>
+
             <td class="px-4 py-2">
                 @foreach($section->events as $event)
                     <span class="badge bg-success">{{ $event->event_name }}</span>
