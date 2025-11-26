@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto p-6">
-    <h2 class="text-3xl font-semibold mb-6 text-gray-800 dark:text-white">Submit Expense</h2>
+    <h2 class="text-3xl font-semibold mb-6 text-gray-800 dark:text-white">Submit Remittance</h2>
 
     <form action="{{ route('remittances.store') }}" method="POST">
         @csrf
@@ -14,7 +14,7 @@
                     <option value="{{ $event->event_id }}">{{ $event->event_name }}</option>
                 @endforeach
             </select>
-        </div>asdasasasd
+        </div>
 
         <div class="mb-4">
             <label class="block mb-1 font-medium text-gray-700 dark:text-white">Amount</label>
