@@ -52,15 +52,17 @@ public function store(Request $request)
         return redirect()->back()->with('error', 'Treasurer record not found for your account.');
     }
 
-    // Store in remittances table
-    Remittance::create([
+   $event = Event::first(); // just grab the first event
+
+Remittance::create([
     'treasurer_id' => $treasurer->treasurer_id,
-    'event_id' => 1, // default event_id (replace 1 with a valid ID)
+    'event_id' => $event->event_id,
     'amount' => $request->amount,
     'remittance_date' => $request->remittance_date,
     'remarks' => $request->remarks,
     'is_remitted' => 0,
 ]);
+
 
 
     return redirect()->route('remittances.index')->with('success', 'Remittance recorded successfully!');
