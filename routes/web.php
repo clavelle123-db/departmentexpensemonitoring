@@ -218,5 +218,6 @@ Route::middleware(['auth', 'role:head'])->group(function () {
     Route::post('/head/remittances/{id}/acknowledge', [HeadTreasurerController::class, 'acknowledge'])
         ->name('head.remittances.acknowledge');
 });
+Route::put('/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
 
 require __DIR__ . '/auth.php';
