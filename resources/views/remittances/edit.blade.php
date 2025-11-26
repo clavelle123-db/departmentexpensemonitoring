@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h2>Edit Remittance</h2>
+    <h2>Edit Expense</h2>
     <form action="{{ route('remittances.update', $remittance->remittance_id) }}" method="POST">
         @csrf @method('PUT')
         <div class="mb-3">

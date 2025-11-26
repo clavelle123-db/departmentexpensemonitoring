@@ -7,7 +7,7 @@
 
         <a href="{{ route('remittances.create') }}"
            class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 mb-3 inline-block">
-           Add Remittance
+           Add Expense
         </a>
 
         <a href="https://www.iprogsms.com/free-sms/new"
