@@ -3,9 +3,9 @@
 @section('content')
 <div class="container mx-auto p-6">
     <div class="mt-6">
-        <h1 class="text-3xl font-semibold text-gray-800 dark:text-white mb-5">Remittances</h1>
+        <h1 class="text-3xl font-semibold text-gray-800 dark:text-white mb-5">Expenses</h1>
                 <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">
-                    <a href="{{ route('remittances.create') }}" class="btn btn-primary mb-3">Add Remittance</a>
+                    <a href="{{ route('remittances.create') }}" class="btn btn-primary mb-3">Add Expenses</a>
                 </button>
     </div>
 
