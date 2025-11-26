@@ -97,7 +97,7 @@ public function update(Request $request, Remittance $remittance)
         'remarks' => 'nullable|string',
     ]);
 
-    // Update only the relevant fields
+    // Only update relevant fields (treasurer_id stays the same)
     $remittance->update([
         'treasurer_id' => $request->treasurer_id,
         'amount' => $request->amount,
