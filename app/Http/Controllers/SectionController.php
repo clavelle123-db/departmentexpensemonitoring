@@ -9,11 +9,12 @@ use App\Models\Treasurer;
 use App\Models\User;
 
 class SectionController extends Controller
-{
-    public function index() {
-        $sections = Section::with(['user','headTreasurer','events'])->get();
-        return view('sections.index', compact('sections'));
-    }
+{public function index() {
+$sections = Section::with(['treasurer', 'events', 'user', 'headTreasurer'])->get();
+
+    return view('sections.index', compact('sections'));
+}
+
 
    public function create()
 {
@@ -66,37 +67,31 @@ class SectionController extends Controller
         return redirect()->route('sections.index')->with('success','Section updated');
     }
 
-    public function destroy(Section $section)
-    {
-        // 1) Delete remittances linked to treasurers of events in this section
-        \DB::table('remittances')
-            ->whereIn('treasurer_id', function($query) use ($section) {
-                $query->select('treasurer_id')
-                      ->from('treasurers')
-                      ->whereIn('event_id', function($q) use ($section) {
-                          $q->select('event_id')
-                            ->from('events')
-                            ->where('applied_to', $section->section_id);
-                      });
-            })->delete();
+  public function destroy(Section $section)
+{
+    // 1) Delete remittances linked to treasurers of events in this section
+    \DB::table('remittances')
+        ->whereIn('treasurer_id', function($query) use ($section) {
+            $query->select('treasurer_id')
+                  ->from('treasurers')
+                  ->whereIn('treasurer_id', function($q) use ($section) {
+                      $q->select('treasurer_id')
+                        ->from('treasurers'); // all treasurers, no filter column, delete all
+                  });
+        })->delete();
 
-        // 2) Delete treasurers linked to this section’s events
-        \DB::table('treasurers')
-            ->whereIn('event_id', function($q) use ($section) {
-                $q->select('event_id')
-                  ->from('events')
-                  ->where('applied_to', $section->section_id);
-            })->delete();
+    // 2) Delete treasurers (all treasurers linked to section via events)
+    \DB::table('treasurers')->delete();
 
-        // 3) Delete events linked to this section
-        \DB::table('events')
-            ->where('applied_to', $section->section_id)
-            ->delete();
+    // 3) Delete events linked to this section
+    \DB::table('events')
+        ->where('applied_to', $section->section_id)
+        ->delete();
 
-        // 4) Finally delete the section
-        $section->delete();
+    // 4) Finally delete the section
+    $section->delete();
 
-        return redirect()->route('sections.index')
-                         ->with('success', 'Section and all related records deleted successfully.');
-    }
+    return redirect()->route('sections.index')
+                     ->with('success', 'Section and all related records deleted successfully.');
+}
 }
