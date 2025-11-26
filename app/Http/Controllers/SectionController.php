@@ -65,8 +65,15 @@ class SectionController extends Controller
         return redirect()->route('sections.index')->with('success','Section updated');
     }
 
-    public function destroy(Section $section) {
-        $section->delete();
-        return redirect()->route('sections.index')->with('success','Section deleted');
-    }
+public function destroy(Section $section)
+{
+    // Delete all events linked to this section
+    \DB::table('events')->where('applied_to', $section->section_id)->delete();
+
+    // Now delete the section
+    $section->delete();
+
+    return redirect()->route('sections.index')->with('success', 'Section deleted');
+}
+
 }
