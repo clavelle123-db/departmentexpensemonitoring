@@ -30,14 +30,12 @@
             <td class="px-4 py-2">{{ $section->section_name }}</td>
             <td class="px-4 py-2">{{ $section->year_level }}</td>
             <td class="px-4 py-2">{{ $section->no_of_students }}</td>
-           <td class="px-4 py-2">
-   <td class="px-4 py-2">
+            <td class="px-4 py-2">
     <span class="badge bg-info">Rona Jean Escala Umbao</span>
 </td>
 
 
 
-            <td class="px-4 py-2">
                 <a href="{{ route('sections.edit', $section->section_id) }}" class="btn btn-warning btn-sm">Edit</a>
                 <form action="{{ route('sections.destroy', $section->section_id) }}" method="POST" class="d-inline">
                     @csrf @method('DELETE')
