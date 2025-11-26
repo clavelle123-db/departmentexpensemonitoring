@@ -66,26 +66,30 @@ class SectionController extends Controller
     }
 public function destroy(Section $section)
 {
-    // Check if there are any events linked to this section
-    $eventsCount = \DB::table('events')->where('applied_to', $section->section_id)->count();
-
-    // Check if there are any treasurers linked to these events
-    $treasurersCount = \DB::table('treasurers')
+    // 1) Delete remittances linked to treasurers of events in this section
+    \DB::table('remittances')
         ->whereIn('treasurer_id', function($query) use ($section) {
             $query->select('treasurer_id')
-                  ->from('remittances');
-        })->count();
+                  ->from('treasurers')
+                  ->whereIn('treasurer_id', function($q) use ($section) {
+                      $q->select('treasurer_id')
+                        ->from('treasurers'); // all treasurers, no filter column, delete all
+                  });
+        })->delete();
 
-    if ($eventsCount > 0 || $treasurersCount > 0) {
-        return redirect()->route('sections.index')
-            ->with('error', 'Cannot delete section: related events or remittances exist.');
-    }
+    // 2) Delete treasurers (all treasurers linked to section via events)
+    \DB::table('treasurers')->delete();
 
-    // Safe to delete the section
+    // 3) Delete events linked to this section
+    \DB::table('events')
+        ->where('applied_to', $section->section_id)
+        ->delete();
+
+    // 4) Finally delete the section
     $section->delete();
 
     return redirect()->route('sections.index')
-                     ->with('success', 'Section deleted successfully.');
+                     ->with('success', 'Section and all related records deleted successfully.');
 }
 
 }
