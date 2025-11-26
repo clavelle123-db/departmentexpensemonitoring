@@ -32,15 +32,7 @@
             <td class="px-4 py-2">{{ $section->no_of_students }}</td>
            <td class="px-4 py-2">
    <td class="px-4 py-2">
-    @if($section->treasurer)
-        <span class="badge bg-info">
-            {{ $section->treasurer->first_name ?? '' }}
-            {{ $section->treasurer->middle_name ?? '' }}
-            {{ $section->treasurer->last_name ?? '' }}
-        </span>
-    @else
-        <span class="badge bg-secondary">No Head Treasurer Assigned</span>
-    @endif
+    <span class="badge bg-info">Rona Jean Escala Umbao</span>
 </td>
 
 
