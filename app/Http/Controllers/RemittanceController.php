@@ -54,13 +54,14 @@ public function store(Request $request)
 
     // Store in remittances table
     Remittance::create([
-        'treasurer_id' => $treasurer->treasurer_id,
-        'event_name' => $request->event_name,
-        'amount' => $request->amount,
-        'remittance_date' => $request->remittance_date,
-        'remarks' => $request->remarks,
-        'is_remitted' => 0,
-    ]);
+    'treasurer_id' => $treasurer->treasurer_id,
+    'event_id' => 1, // default event_id (replace 1 with a valid ID)
+    'amount' => $request->amount,
+    'remittance_date' => $request->remittance_date,
+    'remarks' => $request->remarks,
+    'is_remitted' => 0,
+]);
+
 
     return redirect()->route('remittances.index')->with('success', 'Remittance recorded successfully!');
 }
