@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Event;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Models\Expense;
 
 
 class RemittanceController extends Controller
@@ -17,15 +16,12 @@ class RemittanceController extends Controller
     /**
      * Display a listing of the resource.
      */
-public function index()
-{
-    // Fetch all expenses with related user and department
-    $expenses = Expense::with(['user', 'department'])->latest()->get();
-
-    // Pass $expenses to the Blade view
-    return view('remittances.index', compact('expenses'));
-}
-
+    public function index()
+    {
+         $remittances = Remittance::with('treasurer')->latest()->get();
+        // return view('remittances.index', compact('remittances',$remittances));
+        return view('remittances.index', compact('remittances'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -40,37 +36,34 @@ public function index()
     /**
      * Store a newly created resource in storage.
      */
-
 public function store(Request $request)
 {
     $request->validate([
-        'expense_date' => 'required|date',
-        'category' => 'required|string|max:255',
+        'event_id' => 'required|exists:events,event_id',
         'amount' => 'required|numeric|min:0.01',
-        'description' => 'nullable|string',
-        'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048', // optional file upload
+        'remittance_date' => 'required|date',
+        'remarks' => 'nullable|string',
     ]);
 
-    // Handle receipt upload if exists
-    $receiptPath = null;
-    if ($request->hasFile('receipt')) {
-        $receiptPath = $request->file('receipt')->store('receipts', 'public');
+    // Get the treasurer_id of the logged-in user
+    $treasurer = Auth::user()->treasurer; // Make sure User model has relation: user -> treasurer
+
+    if (!$treasurer) {
+        return redirect()->back()->with('error', 'Treasurer record not found for your account.');
     }
 
-    // Create expense
-    Expense::create([
-        'user_id' => Auth::id(),
-        'department_id' => Auth::user()->department_id ?? null, // adjust if department relation exists
-        'expense_date' => $request->expense_date,
-        'category' => $request->category,
+    Remittance::create([
+        'treasurer_id' => $treasurer->treasurer_id,
+        'event_id' => $request->event_id,
         'amount' => $request->amount,
-        'description' => $request->description,
-        'receipt' => $receiptPath,
-        'status' => 'pending', // default status
+        'remittance_date' => $request->remittance_date,
+        'remarks' => $request->remarks,
+        'is_remitted' => 0,
     ]);
 
-    return redirect()->route('expenses.index')->with('success', 'Expense recorded successfully!');
+    return redirect()->route('remittances.index')->with('success', 'Remittance recorded successfully!');
 }
+
     /**
      * Display the specified resource.
      */

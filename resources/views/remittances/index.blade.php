@@ -4,16 +4,9 @@
 <div class="container mx-auto p-6">
     <div class="mt-6">
         <h1 class="text-3xl font-semibold text-gray-800 dark:text-white mb-5">Expenses</h1>
-
-        <a href="{{ route('expenses.create') }}"
-           class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 mb-3 inline-block">
-           Add Expense
-        </a>
-
-        <a href="https://www.iprogsms.com/free-sms/new"
-           class="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 ml-2">
-           SMS
-        </a>
+                <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">
+                    <a href="{{ route('remittances.create') }}" class="btn btn-primary mb-3">Add Expenses</a>
+                </button>
     </div>
 
     <div class="overflow-x-auto mt-3">
@@ -21,49 +14,31 @@
             <thead>
                 <tr class="bg-gray-100 dark:bg-gray-700 text-left">
                     <th class="px-4 py-2">ID</th>
-                    <th class="px-4 py-2">User</th>
-                    <th class="px-4 py-2">Department</th>
-                    <th class="px-4 py-2">Category</th>
+                    <th class="px-4 py-2">Treasurer</th>
                     <th class="px-4 py-2">Amount</th>
                     <th class="px-4 py-2">Date</th>
-                    <th class="px-4 py-2">Description</th>
-                    <th class="px-4 py-2">Receipt</th>
+                    <th class="px-4 py-2">Remarks</th>
                     <th class="px-4 py-2">Status</th>
                     <th class="px-4 py-2">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($expenses as $expense)
-                    <tr class="border-t border-gray-200 dark:border-gray-700 {{ $expense->status == 'pending' ? '' : ' bg-blue-100' }}">
-                        <td class="px-4 py-2">{{ $expense->id }}</td>
-                        <td class="px-4 py-2">{{ $expense->user->first_name ?? '' }} {{ $expense->user->last_name ?? '' }}</td>
-                        <td class="px-4 py-2">{{ $expense->department->name ?? '' }}</td>
-                        <td class="px-4 py-2">{{ $expense->category }}</td>
-                        <td class="px-4 py-2">{{ $expense->amount }}</td>
-                        <td class="px-4 py-2">{{ $expense->expense_date }}</td>
-                        <td class="px-4 py-2">{{ $expense->description }}</td>
+                @foreach($remittances as $remittance)
+                    <tr class="border-t border-gray-200 dark:border-gray-700 {{ $remittance->is_remitted ==0 ? '' : ' bg-blue-100' }}">
+                        <td class="px-4 py-2">{{ $remittance->remittance_id }}</td>
+                        <td class="px-4 py-2">{{ $remittance->treasurer->treasurer_name }}</td>
+                        <td class="px-4 py-2">{{ $remittance->amount }}</td>
+                        <td class="px-4 py-2">{{ $remittance->remittance_date }}</td>
+                        <td class="px-4 py-2">{{ $remittance->remarks }}</td>
+                        <td class="px-4 py-2 ">{{ $remittance->is_remitted ==0 ?'Pending':'Accepted' }}</td>
                         <td class="px-4 py-2">
-                            @if($expense->receipt)
-                                <a href="{{ asset('storage/' . $expense->receipt) }}" target="_blank" class="text-blue-500 hover:underline">
-                                    View
-                                </a>
-                            @else
-                                N/A
-                            @endif
-                        </td>
-                        <td class="px-4 py-2">{{ ucfirst($expense->status) }}</td>
-                        <td class="px-4 py-2 flex space-x-2">
-                            <a href="{{ route('expenses.edit', $expense->id) }}"
-                               class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-sm">
-                               Edit
+                            <a href="{{ route('remittances.edit', $remittance->remittance_id) }}" class="text-blue-500 hover:text-blue-700">
+                                <x-heroicon-s-pencil-square class="w-5 h-5" />
                             </a>
-                            <form action="{{ route('expenses.destroy', $expense->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                        onclick="return confirm('Delete this expense?')"
-                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
-                                    Delete
+                            <form action="{{ route('remittances.destroy', $remittance->remittance_id) }}" method="POST" class="d-inline">
+                                @csrf @method('DELETE')
+                                <button class="btn btn-danger btn-sm text-red-600 hover:text-red-800" onclick="return confirm('Delete this remittance?')">
+                                    <x-heroicon-s-trash class="w-5 h-5" />
                                 </button>
                             </form>
                         </td>
@@ -72,5 +47,8 @@
             </tbody>
         </table>
     </div>
+
+
+
 </div>
 @endsection
