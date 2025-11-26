@@ -14,7 +14,7 @@
                     <option value="{{ $event->event_id }}">{{ $event->event_name }}</option>
                 @endforeach
             </select>
-        </div>
+        </div>asdasasasd
 
         <div class="mb-4">
             <label class="block mb-1 font-medium text-gray-700 dark:text-white">Amount</label>
