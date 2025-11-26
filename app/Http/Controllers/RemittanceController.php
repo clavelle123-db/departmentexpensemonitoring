@@ -88,19 +88,25 @@ Remittance::create([
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Remittance $remittance)
-    {
-        $request->validate([
-            'treasurer_id' => 'required|exists:treasurers,treasurer_id',
-            'amount' => 'required|numeric|min:0',
-            'remittance_date' => 'required|date',
-            'remarks' => 'nullable|string',
-        ]);
+public function update(Request $request, Remittance $remittance)
+{
+    $request->validate([
+        'treasurer_id' => 'required|exists:treasurers,treasurer_id',
+        'amount' => 'required|numeric|min:0.01',
+        'remittance_date' => 'required|date',
+        'remarks' => 'nullable|string',
+    ]);
 
-        $remittance->update($request->all());
+    // Update only the relevant fields
+    $remittance->update([
+        'treasurer_id' => $request->treasurer_id,
+        'amount' => $request->amount,
+        'remittance_date' => $request->remittance_date,
+        'remarks' => $request->remarks,
+    ]);
 
-        return redirect()->route('remittances.index')->with('success', 'Remittance updated successfully!');
-    }
+    return redirect()->route('remittances.index')->with('success', 'Remittance updated successfully!');
+}
 
     /**
      * Remove the specified resource from storage.
