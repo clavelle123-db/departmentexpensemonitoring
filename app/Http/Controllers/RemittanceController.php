@@ -17,12 +17,15 @@ class RemittanceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-         $remittances = Remittance::with('treasurer')->latest()->get();
-        // return view('remittances.index', compact('remittances',$remittances));
-        return view('remittances.index', compact('remittances'));
-    }
+public function index()
+{
+    // Fetch all expenses with related user and department
+    $expenses = Expense::with(['user', 'department'])->latest()->get();
+
+    // Pass $expenses to the Blade view
+    return view('expenses.index', compact('expenses'));
+}
+
 
     /**
      * Show the form for creating a new resource.
