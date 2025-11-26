@@ -71,14 +71,20 @@ public function destroy(Section $section)
         ->whereIn('treasurer_id', function($query) use ($section) {
             $query->select('treasurer_id')
                   ->from('treasurers')
-                  // adjust this line based on how treasurers link to sections
-                  ->where('headTreasurer_id', $section->section_id);
+                  ->whereIn('event_id', function($q) use ($section) {
+                      $q->select('event_id')
+                        ->from('events')
+                        ->where('applied_to', $section->section_id);
+                  });
         })->delete();
 
-    // 2) Delete treasurers linked to this section
+    // 2) Delete treasurers linked to this section via events
     \DB::table('treasurers')
-        ->where('headTreasurer_id', $section->section_id) // adjust column
-        ->delete();
+        ->whereIn('event_id', function($q) use ($section) {
+            $q->select('event_id')
+              ->from('events')
+              ->where('applied_to', $section->section_id);
+        })->delete();
 
     // 3) Delete events linked to this section
     \DB::table('events')
