@@ -10,18 +10,18 @@
         <!-- Success message-->
         @if (session('success'))
             <div class="alert alert-success">
-                {{session(('success'))}}
+                {{ session('success') }}
             </div>
         @endif
 
         <!-- Validation Errors-->
         @if ($errors->any())
-            <div class="alert alert-alert-danger">
+            <div class="alert alert-danger">
                 <ul class="mb-0">
                     @foreach ($errors->all() as $error )
-                    <li> {{$error}}</li>
+                        <li>{{ $error }}</li>
                     @endforeach
-                {{session(('success'))}}
+                </ul>
             </div>
         @endif
      </div>
@@ -31,27 +31,36 @@
             @csrf
             <div class="mb-3">
                 <label class="form-label">Section Name: </label>
-                <input type="text" name="section_name" class="form-control" required>
+                <input type="text" name="section_name" class="form-control" value="{{ old('section_name') }}" required>
             </div>
+
             <div class="mb-3">
                 <label class="form-label">Course and <br>Year Level (ex. BSIT-1):</label>
-                <input type="text" name="year_level" class="form-control" required>
+                <input type="text" name="year_level" class="form-control" value="{{ old('year_level') }}" required>
             </div>
+
             <div class="mb-3">
                 <label class="form-label">No. of Students: </label>
-                <input type="number" name="no_of_students" class="form-control" required>
+                <input type="number" name="no_of_students" class="form-control" value="{{ old('no_of_students') }}" required>
             </div>
+
+            <!-- Treasurer dropdown -->
+            <div class="mb-3">
+                <label class="form-label">Assign Treasurer:</label>
+                <select name="treasurer_id" class="form-control" required>
+                    <option value="">-- Select Treasurer --</option>
+                    @foreach($treasurers as $treasurer)
+                        <option value="{{ $treasurer->treasurer_id }}" {{ old('treasurer_id') == $treasurer->treasurer_id ? 'selected' : '' }}>
+                            {{ $treasurer->treasurer_name ?? 'Treasurer '.$treasurer->treasurer_id }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
             <button class="btn btn-success bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">Save</button>
-         
 
-            <button class="btn btn-danger bg-blue-red py-2 px-4 rounded-md hover:bg-indigo-700">
-                <a href="{{ route('sections.index') }}" class="btn btn-danger" >Cancel</a>
-            </button>
-
+            <a href="{{ route('sections.index') }}" class="btn btn-danger bg-red-600 py-2 px-4 rounded-md hover:bg-red-700">Cancel</a>
         </form>
      </div>
-
 </div>
-
-
 @endsection

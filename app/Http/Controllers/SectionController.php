@@ -17,8 +17,7 @@ class SectionController extends Controller
     public function create() {
         return view('sections.create');
     }
-
-   public function store(Request $request)
+public function store(Request $request)
 {
     $validated = $request->validate([
         'section_name'=> [
@@ -29,15 +28,17 @@ class SectionController extends Controller
         ],
         'year_level'=> 'required',
         'no_of_students' => 'required|integer|min:0',
+        'treasurer_id' => 'required|exists:treasurers,treasurer_id',
     ], [
         'section_name.unique' => 'A section with this name and year level already exists.',
         'section_name.required' => 'Section name is required.',
         'year_level.required' => 'Year level is required.',
         'no_of_students.required' => 'Number of students is required.',
         'no_of_students.integer' => 'Number of students must be an integer.',
+        'treasurer_id.required' => 'Treasurer is required.',
+        'treasurer_id.exists' => 'Selected treasurer is invalid.',
     ]);
 
-    // Create section with all fields
     Section::create($validated);
 
     return redirect()->back()->with('success', 'Section created successfully!');
