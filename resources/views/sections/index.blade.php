@@ -10,41 +10,43 @@
     </button>
 
 </div>
-
 <table class="min-w-full bg-white dark:bg-gray-800 rounded shadow">
-    <thead class="table-dark">
-        <tr class="bg-gray-100 dark:bg-gray-700">
-            <th  class="px-4 py-2">ID</th>
-            <th  class="px-4 py-2">Section Name</th>
+    <thead class="bg-gray-100 dark:bg-gray-700 text-left">
+        <tr>
+            <th class="px-4 py-2">ID</th>
+            <th class="px-4 py-2">Section Name</th>
             <th class="px-4 py-2">Year Level</th>
             <th class="px-4 py-2"># of Students</th>
             <th class="px-4 py-2">Treasurers</th>
-
             <th class="px-4 py-2">Actions</th>
         </tr>
     </thead>
     <tbody>
-    @foreach($sections as $section)
+        @foreach($sections as $section)
         <tr class="border-t border-gray-200 dark:border-gray-700">
             <td class="px-4 py-2">{{ $section->section_id }}</td>
             <td class="px-4 py-2">{{ $section->section_name }}</td>
             <td class="px-4 py-2">{{ $section->year_level }}</td>
             <td class="px-4 py-2">{{ $section->no_of_students }}</td>
             <td class="px-4 py-2">
-    <span class="badge bg-info">Rona Jean Escala Umbao</span>
-</td>
-
-
-
-                <a href="{{ route('sections.edit', $section->section_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                <form action="{{ route('sections.destroy', $section->section_id) }}" method="POST" class="d-inline">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm"
-                        onclick="return confirm('Are you sure?')">Delete</button>
+                <span class="inline-block bg-blue-500 text-white text-sm px-2 py-1 rounded">
+                    Rona Jean Escala Umbao
+                </span>
+            </td>
+            <td class="px-4 py-2 flex space-x-2">
+                <a href="{{ route('sections.edit', $section->section_id) }}"
+                   class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-sm">Edit</a>
+                <form action="{{ route('sections.destroy', $section->section_id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                            onclick="return confirm('Are you sure?')"
+                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+                        Delete
+                    </button>
                 </form>
             </td>
         </tr>
-    @endforeach
+        @endforeach
     </tbody>
 </table>
-@endsection
