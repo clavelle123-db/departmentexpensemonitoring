@@ -18,10 +18,7 @@ class RemittanceController extends Controller
      */
    public function index()
 {
-    // Fetch all remittances with the associated treasurer and order by latest
-    $remittances = Remittance::with('treasurer')->latest()->get();
-
-    // Pass the data to the view
+    $remittances = Remittance::with(['treasurer.user', 'event'])->latest()->get();
     return view('remittances.index', compact('remittances'));
 }
 

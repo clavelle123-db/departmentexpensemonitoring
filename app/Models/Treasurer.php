@@ -14,9 +14,11 @@ class Treasurer extends Model {
         return $this->belongsTo(Section::class, 'section_assigned');
     }
 
-    public function user() {
-        return $this->belongsTo(User::class, 'user_id');
-    }
+  public function user()
+{
+    return $this->belongsTo(User::class, 'user_id');
+}
+
 
     public function remittances() {
         return $this->hasMany(Remittance::class, 'treasurer_id');

@@ -24,13 +24,14 @@ class Remittance extends Model
 
 
     // Relationships
-    public function treasurer()
-    {
-        return $this->belongsTo(Treasurer::class, 'treasurer_id');
-    }
+   public function treasurer()
+{
+    return $this->belongsTo(Treasurer::class, 'treasurer_id');
+}
 
-    public function event()
-    {
-        return $this->belongsTo(Event::class, 'event_id');
-    }
+public function event()
+{
+    return $this->belongsTo(Event::class, 'event_id');
+}
+
 }
