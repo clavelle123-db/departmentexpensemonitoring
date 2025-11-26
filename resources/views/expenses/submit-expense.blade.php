@@ -7,24 +7,6 @@
         <form action="{{ route('expenses.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            <!-- Department Dropdown -->
-            <div class="mb-4">
-                <label for="department_id" class="block text-sm font-medium text-gray-700">Department</label>
-                @if (count($departments) === 1)
-                    <input type="hidden" name="department_id" value="{{ $departments[0]->id }}">
-                    <p class="text-gray-700 font-medium">{{ $departments[0]->name }}</p>
-                @else
-                    <select name="department_id" id="department_id" class="...">
-                        <option value="">Select Department</option>
-                        @foreach ($departments as $department)
-                            <option value="{{ $department->id }}">{{ $department->name }}</option>
-                        @endforeach
-                    </select>
-                @endif
-                @error('department_id')
-                    <span class="text-red-600 text-sm">{{ $message }}</span>
-                @enderror
-            </div>
 
             <!-- Expense Date -->
             <div class="mb-4">
